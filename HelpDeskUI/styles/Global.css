@@ -1,0 +1,84 @@
+body {
+    margin: 0;
+    font-family: Helvetica;
+    font-size: 13px;
+    overflow: hidden;
+}
+
+html,
+body,
+#__next {
+    height: 100%;
+}
+
+input,
+select,
+button {
+    box-sizing: border-box;
+    color: #000000;
+    border-radius: 0;
+}
+
+input[type=button],
+input[type=color],
+button {
+    height: 26px;
+    cursor: pointer;
+}
+
+select {
+    cursor: pointer;
+    height: 26px;
+    padding: 1px 5px;
+}
+
+input[type=number] {
+    height: 26px;
+}
+
+input[type=radio] {
+    cursor: pointer;
+    height: 26px;
+    padding: 0px;
+    margin: 0px;
+}
+
+input[type=text],
+input[type=password] {
+    height: 26px;
+    padding: 1px 5px;
+}
+
+button {
+    appearance: none;
+    cursor: pointer;
+}
+
+input[type=checkbox] {
+    cursor: pointer;
+}
+
+ul,
+ul li {
+    margin: 0;
+    padding: 0;
+    list-style-position: inside;
+    list-style-type: disc;
+}
+
+.color-change {
+    width: 200px;
+    height: 200px;
+    background-color: #00FF00;
+    animation: color-change-animation .2s infinite alternate;
+}
+
+@keyframes color-change-animation {
+    0% {
+        background-color: rgba(0, 0, 0, 0);
+    }
+
+    100% {
+        background-color: #00FF00;
+    }
+}

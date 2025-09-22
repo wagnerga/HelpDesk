@@ -1,0 +1,8 @@
+bin/
+v16/
+obj/
+.vs/
+*.log.*
+*.log
+*.user
+TestResults
