@@ -106,6 +106,8 @@ install.bat win-x64 Debug Development
 
 > Note: `install.bat` internally calls `setup.ps1` to complete IIS configuration and certificate binding.
 
+> Note: Environment variables are set during the installation. You must restart your terminals or Visual Studio applications before they will be able to load them.
+
 ---
 
 ## Summary
