@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -94,15 +95,14 @@ public class Startup
 				return new RsaSecurityKey(rsa);
 			});
 
+			services.AddSingleton<IPostConfigureOptions<JwtBearerOptions>, JWTBearerPostConfigure>();
+
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 				{
-					var rsa = services.BuildServiceProvider().GetRequiredService<RsaSecurityKey>();
-
 					options.IncludeErrorDetails = true;
 					options.TokenValidationParameters = new TokenValidationParameters
 					{
-						IssuerSigningKey = rsa,
 						ValidAudience = audience,
 						ValidIssuer = issuer,
 						RequireSignedTokens = true,
@@ -170,6 +170,23 @@ public class Startup
 			JsonDictionaryContract contract = base.CreateDictionaryContract(objectType);
 			contract.DictionaryKeyResolver = propertyName => propertyName;
 			return contract;
+		}
+	}
+
+	public class JWTBearerPostConfigure : IPostConfigureOptions<JwtBearerOptions>
+	{
+		private readonly RsaSecurityKey _rsa;
+
+		public JWTBearerPostConfigure(RsaSecurityKey rsa)
+		{
+			_rsa = rsa;
+		}
+
+		public void PostConfigure(string name, JwtBearerOptions options)
+		{
+			if (name != JwtBearerDefaults.AuthenticationScheme) return;
+
+			options.TokenValidationParameters.IssuerSigningKey = _rsa;
 		}
 	}
 }
