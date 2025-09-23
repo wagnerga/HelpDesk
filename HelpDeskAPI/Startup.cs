@@ -115,8 +115,7 @@ public class Startup
 
 		}
 
-		var password = Environment.GetEnvironmentVariable("HDADMINPASSWORD");
-		var connectionString = $"Host=localhost;Database=HelpDesk;Username=hdadmin;Password={password};Pooling=true;MinPoolSize=5;MaxPoolSize=100;";
+		var connectionString = DatabaseConfig.GetConnectionString();
 
 		// Add the database context to the service container.
 		services.AddDbContext<HelpDeskContext>(options => options.UseNpgsql(connectionString));
@@ -182,7 +181,7 @@ public class Startup
 			_rsa = rsa;
 		}
 
-		public void PostConfigure(string name, JwtBearerOptions options)
+		public void PostConfigure(string? name, JwtBearerOptions options)
 		{
 			if (name != JwtBearerDefaults.AuthenticationScheme) return;
 
