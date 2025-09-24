@@ -11,8 +11,8 @@ import { doesElementFitInPopup } from '@/util/Common';
 const AlertPopup = () => {
     const dispatch = useDispatch();
 
-    const [, setWindowWidth] = useState(0);
-    const [, setWindowHeight] = useState(0);
+    const [width, setWidth] = useState(0);
+    const [height, setHeight] = useState(0);
     const paragraphRef = useRef<HTMLDivElement>(null);
 
     const { alerts } = useSelector((state: AppState) => state.alertPopupReducer);
@@ -36,8 +36,8 @@ const AlertPopup = () => {
             clearTimeout(timeout.current);
 
         timeout.current = setTimeout(() => {
-            setWindowWidth(window.innerWidth);
-            setWindowHeight(window.innerHeight);
+            setWidth(window.innerWidth);
+            setHeight(window.innerHeight);
         }, 250);
     }, []);
 
@@ -62,8 +62,8 @@ const AlertPopup = () => {
     const verticalScrollbarVisibleRef = useRef<boolean>(false);
 
     const fit = doesElementFitInPopup({
-        windowWidth: window.innerWidth,
-        windowHeight: window.innerHeight,
+        windowWidth: width,
+        windowHeight: height,
         elementWidth: childrenContainerElementRef.current?.clientWidth,
         elementHeight: childrenContainerElementRef.current?.clientHeight,
         isVerticalScrollbarVisible: verticalScrollbarVisibleRef.current
