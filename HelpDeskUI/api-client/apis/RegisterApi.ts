@@ -16,11 +16,14 @@
 import * as runtime from '../runtime';
 import type {
   BooleanResponse,
+  GuidResponse,
   RegisterRequest,
 } from '../models';
 import {
     BooleanResponseFromJSON,
     BooleanResponseToJSON,
+    GuidResponseFromJSON,
+    GuidResponseToJSON,
     RegisterRequestFromJSON,
     RegisterRequestToJSON,
 } from '../models';
@@ -36,7 +39,7 @@ export class RegisterApi extends runtime.BaseAPI {
 
     /**
      */
-    async registerPostRaw(requestParameters: RegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponse>> {
+    async registerPostRaw(requestParameters: RegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GuidResponse>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -51,12 +54,12 @@ export class RegisterApi extends runtime.BaseAPI {
             body: RegisterRequestToJSON(requestParameters.registerRequest),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GuidResponseFromJSON(jsonValue));
     }
 
     /**
      */
-    async registerPost(requestParameters: RegisterPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponse> {
+    async registerPost(requestParameters: RegisterPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GuidResponse> {
         const response = await this.registerPostRaw(requestParameters, initOverrides);
         return await response.value();
     }

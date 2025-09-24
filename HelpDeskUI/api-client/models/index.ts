@@ -6,6 +6,7 @@ export * from './Column';
 export * from './DashboardResponse';
 export * from './DashboardResponseResponse';
 export * from './GetTicketsRequest';
+export * from './GuidResponse';
 export * from './InsertTicketRequest';
 export * from './LoginRequest';
 export * from './LoginResponse';

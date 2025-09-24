@@ -11,6 +11,7 @@ models/Column.ts
 models/DashboardResponse.ts
 models/DashboardResponseResponse.ts
 models/GetTicketsRequest.ts
+models/GuidResponse.ts
 models/InsertTicketRequest.ts
 models/LoginRequest.ts
 models/LoginResponse.ts

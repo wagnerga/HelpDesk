@@ -162,17 +162,17 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/BooleanResponse"
+                                    "$ref": "#/components/schemas/GuidResponse"
                                 }
                             },
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/BooleanResponse"
+                                    "$ref": "#/components/schemas/GuidResponse"
                                 }
                             },
                             "text/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/BooleanResponse"
+                                    "$ref": "#/components/schemas/GuidResponse"
                                 }
                             }
                         }
@@ -703,6 +703,24 @@
                     "take": {
                         "type": "integer",
                         "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "GuidResponse": {
+                "type": "object",
+                "properties": {
+                    "errorCode": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "errorMessage": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "result": {
+                        "type": "string",
+                        "format": "uuid"
                     }
                 },
                 "additionalProperties": false

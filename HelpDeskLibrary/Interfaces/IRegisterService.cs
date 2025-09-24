@@ -2,6 +2,6 @@
 
 public interface IRegisterService
 {
-	Task Register(string username, string confirmUsername, string password,
+	Task<Guid> Register(string username, string confirmUsername, string password,
 		string confirmPassword, string firstName, string lastName);
 }
