@@ -2,6 +2,7 @@
 using HelpDeskLibrary.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text.RegularExpressions;
 
 namespace HelpDeskLibrary;
 
@@ -14,7 +15,7 @@ public class RegisterService : IRegisterService
 		_scopeFactory = scopeFactory;
 	}
 
-	public async Task Register(string username, string confirmUsername, string password,
+	public async Task<Guid> Register(string username, string confirmUsername, string password,
 		string confirmPassword, string firstName, string lastName)
 	{
 		await ValidateUser(username, confirmUsername, password, confirmPassword);
@@ -22,25 +23,44 @@ public class RegisterService : IRegisterService
 		await using var scope = _scopeFactory.CreateAsyncScope();
 		var context = scope.ServiceProvider.GetRequiredService<HelpDeskContext>();
 
-		await context.User.AddAsync(new User
+		var user = new User
 		{
 			FirstName = firstName,
 			LastName = lastName,
 			Password = await LoginService.GetToken(password),
 			Username = username
-		});
+		};
+
+		await context.User.AddAsync(user);
 
 		await context.SaveChangesAsync();
+
+		return user.Id;
 	}
 
 	private static void ValidatePassword(string password, string confirmPassword)
 	{
+		var hasUpperCase = Regex.IsMatch(password, @"[A-Z]");
+		var hasLowerCase = Regex.IsMatch(password, @"[a-z]");
+		var hasNumber = Regex.IsMatch(password, @"\d");
+		var hasNonAlphas = Regex.IsMatch(password, @"\W");
+
 		if (string.IsNullOrEmpty(password))
 			throw new Exception("Password cannot be empty.");
 		if (password != confirmPassword)
 			throw new Exception("Password and Confirm Password do not match.");
 		if (password.Length > 50)
 			throw new Exception("Password exceeds 50 character maximum.");
+		if (password.Length < 10)
+			throw new Exception("Password must be at least 10 characters long.");
+		if (!hasUpperCase)
+			throw new Exception("Password must have at least 1 uppercase character.");
+		if (!hasLowerCase)
+			throw new Exception("Password must have at least 1 lowercase character.");
+		if (!hasNumber)
+			throw new Exception("Password must have at least 1 number.");
+		if (!hasNonAlphas)
+			throw new Exception("Password must have at least 1 special character.");
 	}
 
 	private async Task ValidateUser(string username, string confirmUsername, string password, string confirmPassword)

@@ -20,16 +20,16 @@ public class RegisterController : ControllerBase
 	}
 
 	[HttpPost("")]
-	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<bool>))]
+	[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Guid>))]
 	[ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Response<bool>))]
 	public async Task<ActionResult> Register([FromBody] RegisterRequest request)
 	{
 		try
 		{
-			await _registerService.Register(request.Username, request.ConfirmUsername,
+			var userId = await _registerService.Register(request.Username, request.ConfirmUsername,
 				request.Password, request.ConfirmPassword, request.FirstName, request.LastName);
 
-			return Ok(new Response<bool> { Result = true });
+			return Ok(new Response<Guid> { Result = userId });
 		}
 		catch (Exception ex)
 		{
