@@ -76,7 +76,8 @@ public class TicketService : ITicketService
 
 	public async Task InsertTicketAsync(ModelTicket ticket)
 	{
-		ValidateDescription(ticket.Description);
+		if (ticket.Description != null)
+			ValidateDescription(ticket.Description);
 
 		await using var scope = _scopeFactory.CreateAsyncScope();
 		var context = scope.ServiceProvider.GetRequiredService<HelpDeskContext>();
@@ -85,7 +86,7 @@ public class TicketService : ITicketService
 		{
 			AssignedUserId = ticket.AssignedUserId,
 			CreatedAt = ticket.CreatedAt,
-			Description = ticket.Description,
+			Description = ticket.Description ?? string.Empty,
 			Id = ticket.Id,
 			Status = ticket.Status.ToString()
 		});

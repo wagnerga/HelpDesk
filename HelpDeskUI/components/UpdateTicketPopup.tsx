@@ -19,7 +19,7 @@ const UpdateTicketPopup = ({ ticket, handleClose }:
     const api = useAPI();
     const dispatch = useDispatch();
 
-    const [description, setDescription] = useState(ticket.description);
+    const [description, setDescription] = useState(ticket.description ?? '');
     const [status, setStatus] = useState<TicketStatus>(ticket.status);
 
     const buttons = [<Button key='close' onClick={handleClose} icon={faClose} title='Close' />];

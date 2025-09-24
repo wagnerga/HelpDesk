@@ -55,7 +55,7 @@ export interface ModelTicket {
      * @type {string}
      * @memberof ModelTicket
      */
-    description: string;
+    description?: string | null;
     /**
      * 
      * @type {string}
@@ -82,7 +82,6 @@ export interface ModelTicket {
 export function instanceOfModelTicket(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "description" in value;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "status" in value;
 
@@ -102,7 +101,7 @@ export function ModelTicketFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'assignedUser': !exists(json, 'assignedUser') ? undefined : UserFromJSON(json['assignedUser']),
         'assignedUserId': !exists(json, 'assignedUserId') ? undefined : json['assignedUserId'],
         'createdAt': json['createdAt'],
-        'description': json['description'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
         'id': json['id'],
         'status': TicketStatusFromJSON(json['status']),
         'updatedAt': !exists(json, 'updatedAt') ? undefined : json['updatedAt'],

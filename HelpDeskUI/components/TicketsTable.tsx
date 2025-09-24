@@ -58,7 +58,7 @@ const TicketsTable = ({
                 { dataName: 'id', value: ticket.id, backgroundColor: popupBackgroundColor, fontColor: popupFontColor },
                 { dataName: 'assignedUserId', value: user ? `${user.firstName} ${user.lastName}` : 'N/A', backgroundColor: popupBackgroundColor, fontColor: popupFontColor },
                 { dataName: 'createdAt', value: dateTimeWithSecondsFormat({ timeZone, date: ticket.createdAt }), backgroundColor: popupBackgroundColor, fontColor: popupFontColor },
-                { dataName: 'description', value: ticket.description, backgroundColor: popupBackgroundColor, fontColor: popupFontColor },
+                { dataName: 'description', value: ticket.description ?? 'N/A', backgroundColor: popupBackgroundColor, fontColor: popupFontColor },
                 { dataName: 'status', value: getDisplayStatus({ status: ticket.status }), backgroundColor: popupBackgroundColor, fontColor: popupFontColor },
                 { dataName: 'updatedAt', value: ticket.updatedAt ? dateTimeWithSecondsFormat({ timeZone, date: ticket.updatedAt }) : 'N/A', backgroundColor: popupBackgroundColor, fontColor: popupFontColor }
             ]

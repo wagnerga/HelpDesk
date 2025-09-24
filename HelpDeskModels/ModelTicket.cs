@@ -12,8 +12,7 @@ public class ModelTicket
 	[Required]
 	public long CreatedAt { get; set; }
 
-	[Required]
-	public required string Description { get; set; }
+	public string? Description { get; set; }
 
 	[Required]
 	public Guid Id { get; set; }
