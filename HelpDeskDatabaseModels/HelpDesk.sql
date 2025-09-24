@@ -42,18 +42,14 @@ REVOKE CONNECT ON DATABASE "HelpDesk" FROM PUBLIC;
 
 GRANT CONNECT ON DATABASE "HelpDesk" TO hdadmin;
 
--- grant priveleges to functions
-GRANT EXECUTE ON FUNCTION NotifyDeleteTicket() TO hdadmin;
-GRANT EXECUTE ON FUNCTION NotifyDeleteUser() TO hdadmin;
+-- grant execute privileges to functions
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO hdadmin;
 
-GRANT EXECUTE ON FUNCTION NotifyUpdateTicket() TO hdadmin;
-GRANT EXECUTE ON FUNCTION NotifyUpdateUser() TO hdadmin;
-
--- grant privilege that allows the user to access objects (like tables, views, and functions) that are stored within the schema
+-- grant privileges that allows the user to access objects (like tables, views, and functions) that are stored within the schema
 GRANT USAGE ON SCHEMA public TO hdadmin;
 
--- grant privilege for all CRUD operations
+-- grant privileges for all CRUD operations
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO hdadmin;
 
--- grant privilege to allow selecting next value for auto-incrementing columns
+-- grant privileges to allow selecting next value for auto-incrementing columns
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO hdadmin;
