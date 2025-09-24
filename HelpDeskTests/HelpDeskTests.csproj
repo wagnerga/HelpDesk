@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HelpDeskAPI\HelpDeskAPI.csproj" />
+    <ProjectReference Include="..\HelpDeskWorker\HelpDeskWorker.csproj" />
   </ItemGroup>
 
 </Project>
