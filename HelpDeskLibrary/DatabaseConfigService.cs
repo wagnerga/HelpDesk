@@ -1,6 +1,6 @@
 ﻿namespace HelpDeskLibrary;
 
-public static class DatabaseConfig
+public static class DatabaseConfigService
 {
 	public static string GetConnectionString(int? port = null)
 	{

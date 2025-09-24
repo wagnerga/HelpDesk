@@ -4,6 +4,6 @@ namespace HelpDeskLibrary.Interfaces;
 
 public interface IUserService
 {
-	Task<ModelUser?> GetUser(string username);
-	Task<List<ModelUser>> GetUsers();
+	Task<ModelUser?> GetUserAsync(string username);
+	Task<List<ModelUser>> GetUsersAsync();
 }

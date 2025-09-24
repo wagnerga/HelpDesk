@@ -25,13 +25,13 @@ public class LoginService : ILoginService
 		_configuration = configuration;
 	}
 
-	public async Task<LoginResponse> Login(string username, string password)
+	public async Task<LoginResponse> LoginAsync(string username, string password)
 	{
 		await using var scope = _scopeFactory.CreateAsyncScope();
 		var context = scope.ServiceProvider.GetRequiredService<HelpDeskContext>();
-		var user = await _userService.GetUser(username) ?? throw new Exception("Login failed.");
+		var user = await _userService.GetUserAsync(username) ?? throw new Exception("Login failed.");
 
-		var token = await GetToken(password);
+		var token = await GetTokenAsync(password);
 
 		if (user.Password != token)
 			throw new Exception("Login failed.");
@@ -94,7 +94,7 @@ public class LoginService : ILoginService
 		return jwtSecurityTokenHandler.WriteToken(jwt);
 	}
 
-	public static async Task<string> GetToken(string value)
+	public static async Task<string> GetTokenAsync(string value)
 	{
 		var bytes = Encoding.UTF8.GetBytes(value);
 		using var sha1 = SHA1.Create();

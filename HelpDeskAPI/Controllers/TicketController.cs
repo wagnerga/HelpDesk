@@ -26,7 +26,7 @@ public class TicketController : ControllerBase
 	{
 		try
 		{
-			await _ticketService.AssignTicket(request.TicketId, request.UserId);
+			await _ticketService.AssignTicketAsync(request.TicketId, request.UserId);
 
 			return Ok(new Response<bool> { Result = true });
 		}
@@ -43,7 +43,7 @@ public class TicketController : ControllerBase
 	{
 		try
 		{
-			var tickets = await _ticketService.GetTickets(request.Skip, request.Take, request.SortColumns, request.Status);
+			var tickets = await _ticketService.GetTicketsAsync(request.Skip, request.Take, request.SortColumns, request.Status);
 
 			return Ok(new Response<ModelWrapper<ModelTicket>> { Result = tickets });
 		}
@@ -60,7 +60,7 @@ public class TicketController : ControllerBase
 	{
 		try
 		{
-			await _ticketService.UnassignTicket(ticketId);
+			await _ticketService.UnassignTicketAsync(ticketId);
 
 			return Ok(new Response<bool> { Result = true });
 		}
@@ -77,7 +77,7 @@ public class TicketController : ControllerBase
 	{
 		try
 		{
-			await _ticketService.InsertTicket(request.Ticket);
+			await _ticketService.InsertTicketAsync(request.Ticket);
 
 			return Ok(new Response<bool> { Result = true });
 		}
@@ -94,7 +94,7 @@ public class TicketController : ControllerBase
 	{
 		try
 		{
-			await _ticketService.UpdateTicket(request.Id, request.Description, request.Status);
+			await _ticketService.UpdateTicketAsync(request.Id, request.Description, request.Status);
 
 			return Ok(new Response<bool> { Result = true });
 		}

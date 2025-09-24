@@ -29,7 +29,7 @@ namespace HelpDeskWorker
 			_logger.LogInformation("Starting");
 
 			// start nodejs server
-			Process.Execute($"{Constants.NodeJSPath}", "cmd.exe", "npm run start", _logger);
+			ProcessService.Execute($"{Constants.NodeJSPath}", "cmd.exe", "npm run start", _logger);
 
 			await base.StartAsync(cancellationToken);
 		}
@@ -39,7 +39,7 @@ namespace HelpDeskWorker
 			_logger.LogInformation("Stopping");
 
 			// kill nodejs server
-			await Process.KillPorts([Constants.NodeJSPort], _logger);
+			await ProcessService.KillPortsAsync([Constants.NodeJSPort], _logger);
 
 			await base.StopAsync(cancellationToken);
 		}

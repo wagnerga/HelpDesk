@@ -123,7 +123,7 @@ public abstract class IntegrationTestBase
 
 		var port = new NpgsqlConnectionStringBuilder(_pgContainer.GetConnectionString()).Port;
 
-		var connectionString = DatabaseConfig.GetConnectionString(port);
+		var connectionString = DatabaseConfigService.GetConnectionString(port);
 
 		_factory = new WebApplicationFactory<Startup>()
 			.WithWebHostBuilder(builder =>

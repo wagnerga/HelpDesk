@@ -17,7 +17,7 @@ public class TicketService : ITicketService
 		_scopeFactory = scopeFactory;
 	}
 
-	public async Task AssignTicket(Guid ticketId, Guid userId)
+	public async Task AssignTicketAsync(Guid ticketId, Guid userId)
 	{
 		await using var scope = _scopeFactory.CreateAsyncScope();
 		var context = scope.ServiceProvider.GetRequiredService<HelpDeskContext>();
@@ -36,7 +36,7 @@ public class TicketService : ITicketService
 		await context.SaveChangesAsync();
 	}
 
-	public async Task<ModelWrapper<ModelTicket>> GetTickets(int skip, int take, List<ModelSortColumn> sortColumns, TicketStatus? status)
+	public async Task<ModelWrapper<ModelTicket>> GetTicketsAsync(int skip, int take, List<ModelSortColumn> sortColumns, TicketStatus? status)
 	{
 		await using var scope = _scopeFactory.CreateAsyncScope();
 		var context = scope.ServiceProvider.GetRequiredService<HelpDeskContext>();
@@ -74,7 +74,7 @@ public class TicketService : ITicketService
 		};
 	}
 
-	public async Task InsertTicket(ModelTicket ticket)
+	public async Task InsertTicketAsync(ModelTicket ticket)
 	{
 		ValidateDescription(ticket.Description);
 
@@ -93,7 +93,7 @@ public class TicketService : ITicketService
 		await context.SaveChangesAsync();
 	}
 
-	public async Task UnassignTicket(Guid ticketId)
+	public async Task UnassignTicketAsync(Guid ticketId)
 	{
 		await using var scope = _scopeFactory.CreateAsyncScope();
 		var context = scope.ServiceProvider.GetRequiredService<HelpDeskContext>();
@@ -112,7 +112,7 @@ public class TicketService : ITicketService
 		}
 	}
 
-	public async Task UpdateTicket(Guid id, string description, TicketStatus status)
+	public async Task UpdateTicketAsync(Guid id, string description, TicketStatus status)
 	{
 		ValidateDescription(description);
 

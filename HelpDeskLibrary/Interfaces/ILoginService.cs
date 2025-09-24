@@ -4,5 +4,5 @@ namespace HelpDeskLibrary.Interfaces;
 
 public interface ILoginService
 {
-	Task<LoginResponse> Login(string username, string password);
+	Task<LoginResponse> LoginAsync(string username, string password);
 }

@@ -26,7 +26,7 @@ public class DashboardController : ControllerBase
 	{
 		try
 		{
-			var users = await _userService.GetUsers();
+			var users = await _userService.GetUsersAsync();
 
 			return Ok(new Response<DashboardResponse>
 			{

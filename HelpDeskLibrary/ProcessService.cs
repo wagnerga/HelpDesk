@@ -5,9 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace HelpDeskLibrary;
 
-public class Process
+public class ProcessService
 {
-	public static async Task<string> ExecuteAndWait(string workingDirectory, string fileName, bool executeThenTerminate, string arguments, ILogger? logger, Dictionary<string, string>? environmentVariables = null, bool stream = false, bool redirectStandardError = true)
+	public static async Task<string> ExecuteAndWaitAsync(string workingDirectory, string fileName, bool executeThenTerminate, string arguments, ILogger? logger, Dictionary<string, string>? environmentVariables = null, bool stream = false, bool redirectStandardError = true)
 	{
 		var psi = new ProcessStartInfo
 		{
@@ -43,7 +43,7 @@ public class Process
 
 		try
 		{
-			p = System.Diagnostics.Process.Start(psi);
+			p = Process.Start(psi);
 
 			if (p != null)
 			{
@@ -126,7 +126,7 @@ public class Process
 
 		try
 		{
-			p = System.Diagnostics.Process.Start(psi);
+			p = Process.Start(psi);
 
 			if (p != null)
 			{
@@ -149,13 +149,13 @@ public class Process
 		return false;
 	}
 
-	public static async Task<bool> AreAnyPortsListening(List<int> ports, ILogger logger)
+	public static async Task<bool> AreAnyPortsListeningAsync(List<int> ports, ILogger logger)
 	{
 		foreach (var port in ports)
 		{
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			{
-				var output = await ExecuteAndWait("c:\\", "cmd.exe", true, $"netstat -ano | findstr :{port}", logger);
+				var output = await ExecuteAndWaitAsync("c:\\", "cmd.exe", true, $"netstat -ano | findstr :{port}", logger);
 
 				if (!string.IsNullOrEmpty(output))
 				{
@@ -170,7 +170,7 @@ public class Process
 			}
 			else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 			{
-				var output = await ExecuteAndWait("/", "/usr/bin/bash", true, $"lsof -t -i:{port}", logger);
+				var output = await ExecuteAndWaitAsync("/", "/usr/bin/bash", true, $"lsof -t -i:{port}", logger);
 
 				if (!string.IsNullOrEmpty(output))
 				{
@@ -188,13 +188,13 @@ public class Process
 		return false;
 	}
 
-	public static async Task KillPorts(List<int> ports, ILogger logger)
+	public static async Task KillPortsAsync(List<int> ports, ILogger logger)
 	{
 		foreach (var port in ports)
 		{
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			{
-				var output = await ExecuteAndWait("c:\\", "cmd.exe", true, $"netstat -ano | findstr :{port}", logger);
+				var output = await ExecuteAndWaitAsync("c:\\", "cmd.exe", true, $"netstat -ano | findstr :{port}", logger);
 
 				if (!string.IsNullOrEmpty(output))
 				{
@@ -214,13 +214,13 @@ public class Process
 
 					foreach (var pid in pids)
 					{
-						await ExecuteAndWait("c:\\", "cmd.exe", true, $"taskkill /PID {pid} /F", logger);
+						await ExecuteAndWaitAsync("c:\\", "cmd.exe", true, $"taskkill /PID {pid} /F", logger);
 					}
 				}
 			}
 			else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 			{
-				var output = await ExecuteAndWait("/", "/usr/bin/bash", true, $"lsof -t -i :{port}", logger);
+				var output = await ExecuteAndWaitAsync("/", "/usr/bin/bash", true, $"lsof -t -i :{port}", logger);
 
 				if (!string.IsNullOrEmpty(output))
 				{
@@ -230,7 +230,7 @@ public class Process
 
 					foreach (var pid in pids)
 					{
-						await ExecuteAndWait("/", "/usr/bin/bash", true, $"kill {pid}", logger);
+						await ExecuteAndWaitAsync("/", "/usr/bin/bash", true, $"kill {pid}", logger);
 					}
 				}
 			}

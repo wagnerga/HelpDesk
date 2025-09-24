@@ -30,7 +30,7 @@ static Action<HostBuilderContext, IServiceCollection> ConfigureServices()
 {
 	return (hostContext, services) =>
 	{
-		var connectionString = DatabaseConfig.GetConnectionString();
+		var connectionString = DatabaseConfigService.GetConnectionString();
 
 		// Add the database context to the service container.
 		services.AddDbContext<HelpDeskContext>(options => options.UseNpgsql(connectionString));

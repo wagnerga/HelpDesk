@@ -15,10 +15,10 @@ public class RegisterService : IRegisterService
 		_scopeFactory = scopeFactory;
 	}
 
-	public async Task<Guid> Register(string username, string confirmUsername, string password,
+	public async Task<Guid> RegisterAsync(string username, string confirmUsername, string password,
 		string confirmPassword, string firstName, string lastName)
 	{
-		await ValidateUser(username, confirmUsername, password, confirmPassword);
+		await ValidateUserAsync(username, confirmUsername, password, confirmPassword);
 
 		await using var scope = _scopeFactory.CreateAsyncScope();
 		var context = scope.ServiceProvider.GetRequiredService<HelpDeskContext>();
@@ -27,7 +27,7 @@ public class RegisterService : IRegisterService
 		{
 			FirstName = firstName,
 			LastName = lastName,
-			Password = await LoginService.GetToken(password),
+			Password = await LoginService.GetTokenAsync(password),
 			Username = username
 		};
 
@@ -63,14 +63,14 @@ public class RegisterService : IRegisterService
 			throw new Exception("Password must have at least 1 special character.");
 	}
 
-	private async Task ValidateUser(string username, string confirmUsername, string password, string confirmPassword)
+	private async Task ValidateUserAsync(string username, string confirmUsername, string password, string confirmPassword)
 	{
-		await ValidateUsername(username, confirmUsername);
+		await ValidateUsernameAsync(username, confirmUsername);
 
 		ValidatePassword(password, confirmPassword);
 	}
 
-	private async Task ValidateUsername(string username, string confirmUsername)
+	private async Task ValidateUsernameAsync(string username, string confirmUsername)
 	{
 		await using var scope = _scopeFactory.CreateAsyncScope();
 		var context = scope.ServiceProvider.GetRequiredService<HelpDeskContext>();

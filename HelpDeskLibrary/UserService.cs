@@ -15,7 +15,7 @@ public class UserService : IUserService
 		_scopeFactory = scopeFactory;
 	}
 
-	public async Task<ModelUser?> GetUser(string username)
+	public async Task<ModelUser?> GetUserAsync(string username)
 	{
 		await using var scope = _scopeFactory.CreateAsyncScope();
 		var context = scope.ServiceProvider.GetRequiredService<HelpDeskContext>();
@@ -34,7 +34,7 @@ public class UserService : IUserService
 			: null;
 	}
 
-	public async Task<List<ModelUser>> GetUsers()
+	public async Task<List<ModelUser>> GetUsersAsync()
 	{
 		await using var scope = _scopeFactory.CreateAsyncScope();
 		var context = scope.ServiceProvider.GetRequiredService<HelpDeskContext>();

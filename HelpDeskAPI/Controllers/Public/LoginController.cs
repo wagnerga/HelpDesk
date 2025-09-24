@@ -26,7 +26,7 @@ public class LoginController : ControllerBase
 	{
 		try
 		{
-			var response = await _loginService.Login(request.Username, request.Password);
+			var response = await _loginService.LoginAsync(request.Username, request.Password);
 
 			return Ok(new Response<LoginResponse> { Result = response });
 		}

@@ -26,7 +26,7 @@ public class RegisterController : ControllerBase
 	{
 		try
 		{
-			var userId = await _registerService.Register(request.Username, request.ConfirmUsername,
+			var userId = await _registerService.RegisterAsync(request.Username, request.ConfirmUsername,
 				request.Password, request.ConfirmPassword, request.FirstName, request.LastName);
 
 			return Ok(new Response<Guid> { Result = userId });
