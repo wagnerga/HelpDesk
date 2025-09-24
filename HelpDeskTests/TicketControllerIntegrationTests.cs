@@ -9,14 +9,14 @@ using System.Net.Http.Json;
 namespace HelpDeskTests;
 
 [TestClass]
-public class TicketControllerIntegrationTests : IntegrationTestBase
+public class TicketControllerIntegrationTests : ControllerIntegrationTestBase
 {
 	[TestMethod]
 	[TestCategory("Integration")]
 	public async Task AssignTicket_ValidRequest_UpdatesAssignedUserId()
 	{
 		// Arrange
-		var userId = await AuthenticateTestUserAsync();
+		var userId = await AuthenticateTestUserAsync(); // ensure auth is in place
 		var ticketId = Guid.NewGuid();
 
 		await SeedTicketAsync(ticketId, null, "Integration test ticket.");
@@ -50,7 +50,7 @@ public class TicketControllerIntegrationTests : IntegrationTestBase
 	public async Task UnassignTicket_ValidRequest_UpdatesAssignedUserId()
 	{
 		// Arrange
-		var userId = await AuthenticateTestUserAsync();
+		var userId = await AuthenticateTestUserAsync(); // ensure auth is in place
 		var ticketId = Guid.NewGuid();
 
 		await SeedTicketAsync(ticketId, userId, "Integration test ticket with assigned user.");
@@ -79,7 +79,7 @@ public class TicketControllerIntegrationTests : IntegrationTestBase
 	public async Task AssignTicket_InvalidUserId_ReturnsBadRequest()
 	{
 		// Arrange
-		await AuthenticateTestUserAsync(); // just to ensure auth is in place
+		await AuthenticateTestUserAsync(); // ensure auth is in place
 		var ticketId = Guid.NewGuid();
 		var invalidUserId = Guid.NewGuid(); // not registered
 
@@ -132,7 +132,7 @@ public class TicketControllerIntegrationTests : IntegrationTestBase
 	public async Task GetTickets_ValidRequest_ReturnsPaginatedSortedResults()
 	{
 		// Arrange
-		var userId = await AuthenticateTestUserAsync();
+		var userId = await AuthenticateTestUserAsync(); // ensure auth is in place
 
 		// Seed multiple tickets with different statuses and timestamps
 		var ticketIds = new List<Guid>();
@@ -186,7 +186,7 @@ public class TicketControllerIntegrationTests : IntegrationTestBase
 	public async Task GetTickets_ByStatusFilter_ReturnsFilteredResults()
 	{
 		// Arrange
-		var userId = await AuthenticateTestUserAsync();
+		var userId = await AuthenticateTestUserAsync(); // ensure auth is in place
 
 		// Seed tickets with mixed statuses
 		var openTicketId = Guid.NewGuid();
@@ -219,5 +219,62 @@ public class TicketControllerIntegrationTests : IntegrationTestBase
 		Assert.IsTrue(result?.Result?.Results?.All(t => t.Status == TicketStatus.Open), "All returned tickets should have status 'Open'.");
 		Assert.IsTrue(result?.Result?.Results?.Any(t => t.Id == openTicketId), "Open ticket should be included.");
 		Assert.IsFalse(result?.Result?.Results?.Any(t => t.Id == closedTicketId), "Closed ticket should be excluded.");
+	}
+
+	[TestMethod]
+	[TestCategory("Integration")]
+	public async Task InsertTicket_ValidRequest_ReturnsOk()
+	{
+		// Arrange
+		var userId = await AuthenticateTestUserAsync(); // ensure auth is in place
+		var request = new InsertTicketRequest
+		{
+			Ticket = new ModelTicket
+			{
+				Id = Guid.NewGuid(),
+				AssignedUserId = null,
+				CreatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
+				Description = "This is a valid ticket description.",
+				Status = TicketStatus.Open
+			}
+		};
+
+		// Act
+		var response = await _client.PostAsJsonAsync("/ticket", request);
+
+		// Assert
+		await AssertResponseSuccessAsync(response);
+
+		var content = await response.Content.ReadFromJsonAsync<Response<bool>>();
+		Assert.IsTrue(content?.Result);
+	}
+
+	[TestMethod]
+	[TestCategory("Integration")]
+	public async Task InsertTicket_DescriptionTooLong_ReturnsBadRequest()
+	{
+		// Arrange
+		var userId = await AuthenticateTestUserAsync(); // ensure auth is in place
+		var request = new InsertTicketRequest
+		{
+			Ticket = new ModelTicket
+			{
+				Id = Guid.NewGuid(),
+				AssignedUserId = null,
+				CreatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
+				Description = new string('x', 3001), // exceeds limit
+				Status = TicketStatus.Open
+			}
+		};
+
+		// Act
+		var response = await _client.PostAsJsonAsync("/ticket", request);
+
+		// Assert
+		Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+
+		var content = await response.Content.ReadFromJsonAsync<Response<bool>>();
+		Assert.IsFalse(content?.Result ?? true);
+		Assert.AreEqual("Description exceeds 3000 character maximum.", content?.ErrorMessage);
 	}
 }

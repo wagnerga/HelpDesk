@@ -14,7 +14,7 @@ using Testcontainers.PostgreSql;
 
 namespace HelpDeskTests;
 
-public abstract class IntegrationTestBase
+public abstract class ControllerIntegrationTestBase
 {
 	protected PostgreSqlContainer _pgContainer = null!;
 	protected WebApplicationFactory<Startup> _factory = null!;
@@ -93,7 +93,6 @@ public abstract class IntegrationTestBase
 			.WithDatabase("HelpDesk")
 			.WithUsername("postgres")
 			.WithPassword("password")
-			.WithEnvironment("POSTGRES_DB", "HelpDesk")
 			.Build();
 
 		await _pgContainer.StartAsync();

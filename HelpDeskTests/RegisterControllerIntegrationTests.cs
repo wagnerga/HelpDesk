@@ -1,5 +1,8 @@
-﻿using HelpDeskModels;
+﻿using HelpDeskLibrary;
+using HelpDeskModels;
 using HelpDeskModels.RegisterControllerModels;
+using HelpDeskWorker;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Json;
@@ -7,7 +10,7 @@ using System.Net.Http.Json;
 namespace HelpDeskTests;
 
 [TestClass]
-public class RegisterControllerIntegrationTests : IntegrationTestBase
+public class RegisterControllerIntegrationTests : ControllerIntegrationTestBase
 {
 	[TestMethod]
 	[TestCategory("Integration")]

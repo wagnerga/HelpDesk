@@ -12,8 +12,9 @@ This document outlines the prerequisites and installation steps required to set 
   - [Add OpenSSL to System PATH](#3-add-openssl-to-system-path)
   - [Install PostgreSQL](#4-install-postgresql)
   - [Set the PGPASSWORD Environment Variable](#5-set-the-pgpassword-environment-variable)
+  - [Install Docker for Windows (Integration Tests Only)](#6-install-docker-for-windows-integration-tests-only)
 - [Installation](#installation)
-  - [Run install.bat in Command Prompt](#6-run-installbat-in-command-prompt)
+  - [Run install.bat in Command Prompt](#run-installbat-in-command-prompt)
 - [Summary](#summary)
 - [Technical Design Overview](#technical-design-overview)
   - [Architecture Summary](#architecture-summary)
@@ -86,9 +87,26 @@ setx PGPASSWORD "[YOUR_POSTGRES_PASSWORD]" /m
 
 ---
 
+### 6. Install Docker for Windows (Integration Tests Only)
+
+Docker is required only for running integration tests. It is used to spin up isolated containers for services like PostgreSQL and Node.js during test execution.
+
+1. Visit the [Docker Desktop for Windows download page](https://www.docker.com/products/docker-desktop/).
+2. Download and install Docker Desktop.
+3. During installation, ensure the **WSL 2 backend** is enabled (recommended).
+4. After installation, launch Docker Desktop and verify it is running.
+
+**Verify installation:**
+
+```bash
+docker --version
+```
+
+> Note: You do not need Docker to run the HelpDesk application itself — only for executing integration tests.
+
 ## Installation
 
-### 6. Run `install.bat` in Command Prompt
+### Run `install.bat` in Command Prompt
 
 This script performs the full installation process:
 
