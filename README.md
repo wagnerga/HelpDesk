@@ -18,7 +18,6 @@ This document outlines the prerequisites and installation steps required to set 
 - [Summary](#summary)
 - [Technical Design Overview](#technical-design-overview)
   - [Architecture Summary](#architecture-summary)
-  - [Design Decisions](#design-decisions)
   - [Security and Scalability](#security-and-scalability)
 
 ---
@@ -140,45 +139,24 @@ Once all steps are complete, your HelpDesk application will be installed and run
 
 ### Architecture Summary
 
-HelpDesk consists of five core components:
+HelpDesk is composed of five independently deployable components, each designed for modularity, scalability, and maintainability within a Windows-based infrastructure:
 
-- **Frontend**: Built with [Next.js](https://nextjs.org/)
-- **Backend API**: Developed in [.NET Core](https://dotnet.microsoft.com/)
-- **Background Service**: Powered by [Node.js](https://nodejs.org/)
-- **Background Worker**: Developed in [.NET Core](https://dotnet.microsoft.com/)
-- **Database**: Hosted on [PostgreSQL](https://www.postgresql.org/)
+- **Frontend (Next.js)**  
+  Serves the user interface with support for both static and server-side rendering. It communicates with the backend API and listens for real-time updates via WebSockets. Deployed behind IIS with HTTPS bindings.
 
-Each component is independently deployable and optimized for Windows-based infrastructure.
+- **Backend API (.NET Core)**  
+  Exposes RESTful endpoints for core business logic, including ticket management, authentication, and user operations. Stateless by design, allowing horizontal scaling behind a load balancer.
 
----
+- **Background Service (Node.js)**  
+  Listens for PostgreSQL `LISTEN/NOTIFY` events and emits real-time updates to connected clients using Socket.IO. Decouples real-time messaging from the API layer, improving responsiveness and scalability.
 
-### Design Decisions
+- **Background Worker (.NET Core)**  
+  Ensures the Node.js service is running and healthy. Can be extended to perform scheduled tasks, health checks, or service orchestration. Runs as a Windows service and integrates with system logging.
 
-#### Windows-Based Hosting
-- Ensures compatibility with enterprise tooling and .NET Core
-- Simplifies deployment of mixed tech stacks (.NET + Node.js)
+- **Database (PostgreSQL)**  
+  Stores all application data with support for ACID transactions, role-based access control, and asynchronous notifications. Can be scaled with read replicas and tuned for high-concurrency workloads.
 
-#### Next.js Frontend
-- Supports static and server-side rendering
-- Delivers fast, SEO-friendly pages
-- Integrates with backend APIs and WebSocket services
-
-#### .NET Core API
-- Provides secure, scalable REST endpoints
-- Separates business logic from presentation and real-time layers
-
-#### Node.js Background Service
-- Listens for PostgreSQL `LISTEN/NOTIFY` triggers
-- Emits real-time messages via WebSocket (Socket.IO)
-- Improves scalability by decoupling real-time logic
-
-#### .NET Core Worker
-- Ensures Node.JS Background Service is running
-
-#### PostgreSQL Database
-- Reliable, ACID-compliant, and feature-rich
-- Supports asynchronous notifications
-- Secured with role-based access and encryption
+Together, these components form a loosely coupled system that supports horizontal scaling, real-time communication, and secure data handling — all optimized for enterprise-grade Windows environments.
 
 ---
 
