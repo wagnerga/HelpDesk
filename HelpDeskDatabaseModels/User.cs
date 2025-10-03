@@ -15,5 +15,7 @@ public partial class User
 
     public string Username { get; set; } = null!;
 
+    public virtual ICollection<Comment> Comment { get; set; } = new List<Comment>();
+
     public virtual ICollection<Ticket> Ticket { get; set; } = new List<Ticket>();
 }

@@ -18,4 +18,6 @@ public partial class Ticket
     public long? UpdatedAt { get; set; }
 
     public virtual User? AssignedUser { get; set; }
+
+    public virtual ICollection<Comment> Comment { get; set; } = new List<Comment>();
 }

@@ -16,10 +16,26 @@ CREATE TABLE "User" (
 	"Username" VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE "Comment" (
+	"CommentId" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+	"TicketId" UUID NOT NULL,
+	"UserId" UUID NOT NULL,
+	"Message" VARCHAR(150) NOT NULL,
+	"CreatedAt" BIGINT NOT NULL
+);
+
 -- Step 2: Create Foreign Keys
 ALTER TABLE "Ticket"
 ADD CONSTRAINT "FK_Ticket_User"
 FOREIGN KEY ("AssignedUserId") REFERENCES "User" ("Id");
+
+ALTER TABLE "Comment"
+ADD CONSTRAINT "FK_Comment_Ticket"
+FOREIGN KEY ("TicketId") REFERENCES "Ticket" ("Id");
+
+ALTER TABLE "Comment"
+ADD CONSTRAINT "FK_Comment_User"
+FOREIGN KEY ("UserId") REFERENCES "User" ("Id");
 
 -- Step 3: Create Notify Functions
 CREATE OR REPLACE FUNCTION NotifyDeleteTicket() RETURNS trigger AS $BODY$ BEGIN PERFORM pg_notify('delete_ticket', row_to_json(OLD) :: text); RETURN OLD; END; $BODY$ LANGUAGE plpgsql VOLATILE COST 100;

@@ -1,1 +1,1 @@
-﻿Scaffold-DbContext "Host=localhost;Database=HelpDesk;Username=postgres;" Npgsql.EntityFrameworkCore.PostgreSQL -Project "HelpDeskDatabaseModels" -NoPluralize -force -UseDatabaseNames -Tables "Ticket", "User"
+﻿Scaffold-DbContext "Host=localhost;Database=HelpDesk;Username=postgres;" Npgsql.EntityFrameworkCore.PostgreSQL -Project "HelpDeskDatabaseModels" -NoPluralize -force -UseDatabaseNames -Tables "Ticket", "User", "Comment"
